@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react'
 
 function App() {
 
-  const [rssFile, setRssFile] = useState('');
+  let rssVar
+
+  const [rssFile, setRssFile] = useState();
   const [audioURL, setAudioURL] = useState('')
-  const podTitle = document.querySelector('p')
+  let podTitle = document.querySelector('p')
   
 
   useEffect(() => {
@@ -14,19 +16,17 @@ function App() {
     console.log(RSS)
     const xhr = new XMLHttpRequest;
     xhr.open('GET', RSS);
-
     xhr.responseType = 'document';
-
     xhr.overrideMimeType('text/xml');
 
     xhr.onload = () => {
         if (xhr.readyState === xhr.DONE && xhr.status === 200) {
             console.log(xhr.response, xhr.responseXML);
-            setRssFile(xhr.responseXML);
-            podTitle.innerText = rssFile.querySelector('item title').innerHTML;
-            console.log(rssFile.querySelector('item title'));
-            setAudioURL(rssFile.querySelector('item link').innerHTML);
-            console.log(audioURL);
+            rssVar = xhr.responseXML;
+            podTitle = rssVar.querySelector('item title').innerHTML;
+            console.log(rssVar.querySelector('item title'));
+            setAudioURL(rssVar.querySelector('item link').innerHTML);
+            console.log(rssVar.querySelectorAll('item link')[0].textContent);
         }
     };
 

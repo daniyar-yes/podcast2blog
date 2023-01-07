@@ -3,13 +3,16 @@ import { useState, useEffect } from 'react'
 
 function App() {
 
-  let id = 6;
+  let id = 0;
   
 
   const [titles, setTitles] = useState([]);
   const [audioURLS, setAudioURLS] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
   const [shortDesc, setShortDesc] = useState([]);
+  const [imgSrc, setImgSrc] = useState('')
+
+  const [episodes, setEpisodes] = useState([]);
 
   useEffect(() => {
     // fetching XML is specific in this, code below follows MDN recommendations for XML
@@ -21,11 +24,25 @@ function App() {
     xhr.onload = () => {
         if (xhr.readyState === xhr.DONE && xhr.status === 200) {
             const response = xhr.responseXML;
-            getTitles(response);
-            getDescriptons(response);
-            getAudioLinks(response);
-            console.log(response)
-            console.log(response.querySelector('image url').innerHTML);
+            const titles = getTitles(response);
+            console.log(titles);
+            const shortenedDesc = getDescriptons(response);
+            console.log(shortenedDesc)
+            const links = getAudioLinks(response);
+            console.log(links)
+            const mainImage = response.querySelector('image url').innerHTML;
+            setImgSrc(mainImage)
+
+            const combined = titles.map((title, index) => {
+              return {
+                id: index,
+                title,
+                description: shortenedDesc[index],
+                audioURL: links[index]
+              };
+            });
+            setEpisodes(combined);
+            console.log(combined)
         }
     };
 
@@ -36,7 +53,8 @@ function App() {
     let titles = [];
     resXML.querySelectorAll('item title')
       .forEach((title) => titles.push(title.textContent));
-    setTitles(titles);
+    // setTitles(titles);
+    return titles;
   }
 
   const getDescriptons = (resXML) => {
@@ -49,8 +67,9 @@ function App() {
         descriptions.push(cleanText);
         shortenedDesc.push(shortened)
     });
-    setDescriptions(descriptions);
-    setShortDesc(shortenedDesc)
+    // setDescriptions(descriptions);
+    // setShortDesc(shortenedDesc);
+    return shortenedDesc;
   }
 
   const getAudioLinks = (resXML) => {
@@ -61,7 +80,8 @@ function App() {
         const matches = link.outerHTML.match(regex);
         links.push(matches[1]);
     })
-    setAudioURLS(links);
+    // setAudioURLS(links);
+    return links;
   }
 
   return (
@@ -75,6 +95,7 @@ function App() {
         </input>
         <button type='submit'>Get RSS</button>
       </form>
+      <img style={{width: '100', height: '200px'}}  src={imgSrc}></img>
       <h3>{titles[id]} </h3>
       <p>{shortDesc[id]}</p>
       <audio controls src={audioURLS[id]}></audio>

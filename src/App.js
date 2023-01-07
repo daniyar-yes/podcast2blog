@@ -1,45 +1,64 @@
 import RSS from './RssUrl'
-import sampleAudio from './sampleAudio'
 import { useState, useEffect } from 'react'
 
 function App() {
 
-  let rssVar
-  const regex = /url="(.*?)"/;
+  
+  
 
   const [titles, setTitles] = useState([]);
   const [audioURLS, setAudioURLS] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);
-  let podTitle = document.querySelector('p')
-  
+  const [descriptions, setDescriptions] = useState([]);  
 
   useEffect(() => {
-    // put XML fetch logic here
+    // fetching XML is specific in this, code below follows MDN recommendations for XML
     const xhr = new XMLHttpRequest;
     xhr.open('GET', RSS);
     xhr.responseType = 'document';
     xhr.overrideMimeType('text/xml');
-    let links = []
-
+    // of XML is fetched OK, we need to get arrays of Titles, Descriptions, AudioURLS in the order they appear in the feed
     xhr.onload = () => {
         if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-            rssVar = xhr.responseXML;
-            console.log(rssVar)
-            setTitles(rssVar.querySelectorAll('item title')[0].textContent);
-            console.log(rssVar.querySelector('item title'));
-            setAudioURLS(rssVar.querySelector('item link').innerHTML);
-            console.log(rssVar.querySelectorAll('item link')[0].textContent);
-            console.log(rssVar.querySelectorAll('item link'))
-            rssVar.querySelectorAll('item enclosure').forEach((link) => links.push(link.outerHTML))
-            setAudioURLS(links)
-            const matches = rssVar.querySelectorAll('item enclosure')[0].outerHTML.match(regex)
-            setAudioURLS(matches[1])
-            console.log(rssVar.querySelector('image url').innerHTML)
+            const response = xhr.responseXML;
+            getTitles(response);
+            getDescriptons(response);
+            getAudioLinks(response);
+            console.log(response)
+            console.log(response.querySelector('image url').innerHTML);
         }
     };
 
   xhr.send()
   }, [])
+
+  const getTitles = (resXML) => {
+    let titles = [];
+    resXML.querySelectorAll('item title')
+      .forEach((title) => titles.push(title.textContent));
+    setTitles(titles);
+  }
+
+  const getDescriptons = (resXML) => {
+    let descriptions = [];
+    resXML.querySelectorAll('item description')
+      .forEach((description) => {
+        let cleanText = description.textContent.replace(/<\/?p>/g, '').replace(/--- .*/, '');
+        console.log(cleanText)
+        descriptions.push(cleanText)
+    });
+    setDescriptions(descriptions)
+  }
+
+  const getAudioLinks = (resXML) => {
+    let links = [];
+    const regex = /url="(.*?)"/;
+    resXML.querySelectorAll('item enclosure')
+      .forEach((link) => {
+        const matches = link.outerHTML.match(regex);
+        links.push(matches[1]);
+    })
+    setAudioURLS(links);
+  }
 
   return (
     <div className="App">
@@ -52,10 +71,12 @@ function App() {
         </input>
         <button type='submit'>Get RSS</button>
       </form>
-      <audio controls src={audioURLS}></audio>
-      <audio controls src={sampleAudio}></audio>
-      <p>#3 - IELTS Reading - советы по подготовке к секции ридинг и не только</p>
-      <h3>{titles} </h3>
+      <h3>{titles[4]} </h3>
+      <p>{descriptions[4].substring(0, 140) + '... '}
+        <span
+          onClick={() => console.log(descriptions[4])}>Read More</span>
+      </p>
+      <audio controls src={audioURLS[4]}></audio>
     </div>
   );
 }

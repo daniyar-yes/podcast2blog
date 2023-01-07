@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react'
 
 function App() {
 
-  
+  let id = 6;
   
 
   const [titles, setTitles] = useState([]);
   const [audioURLS, setAudioURLS] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);  
+  const [descriptions, setDescriptions] = useState([]);
+  const [shortDesc, setShortDesc] = useState([]);
 
   useEffect(() => {
     // fetching XML is specific in this, code below follows MDN recommendations for XML
@@ -40,13 +41,16 @@ function App() {
 
   const getDescriptons = (resXML) => {
     let descriptions = [];
+    let shortenedDesc = [];
     resXML.querySelectorAll('item description')
       .forEach((description) => {
         let cleanText = description.textContent.replace(/<\/?p>/g, '').replace(/--- .*/, '');
-        console.log(cleanText)
-        descriptions.push(cleanText)
+        let shortened = cleanText.substring(0, 140) + '... Read More';
+        descriptions.push(cleanText);
+        shortenedDesc.push(shortened)
     });
-    setDescriptions(descriptions)
+    setDescriptions(descriptions);
+    setShortDesc(shortenedDesc)
   }
 
   const getAudioLinks = (resXML) => {
@@ -71,12 +75,12 @@ function App() {
         </input>
         <button type='submit'>Get RSS</button>
       </form>
-      <h3>{titles[4]} </h3>
-      <p>{descriptions[4].substring(0, 140) + '... '}
-        <span
-          onClick={() => console.log(descriptions[4])}>Read More</span>
-      </p>
-      <audio controls src={audioURLS[4]}></audio>
+      <h3>{titles[id]} </h3>
+      <p>{shortDesc[id]}</p>
+      <audio controls src={audioURLS[id]}></audio>
+      <h3>{titles[id+1]} </h3>
+      <p>{shortDesc[id+1]}</p>
+      <audio controls src={audioURLS[id+1]}></audio>
     </div>
   );
 }

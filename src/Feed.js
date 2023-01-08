@@ -1,4 +1,4 @@
-import Episode from './Episdode'
+import Episode from './Episode'
 
 const Feed = ({ episodes }) => {
   return (

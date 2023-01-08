@@ -1,5 +1,6 @@
 import RSS from './RssUrl'
 import { useState, useEffect } from 'react'
+import Feed from './Feed';
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
   const [descriptions, setDescriptions] = useState([]);
   const [shortDesc, setShortDesc] = useState([]);
   const [imgSrc, setImgSrc] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const [episodes, setEpisodes] = useState([]);
 
@@ -42,11 +44,13 @@ function App() {
               };
             });
             setEpisodes(combined);
-            console.log(combined)
+            console.log(combined);
+            setIsLoading(false);
         }
     };
 
   xhr.send()
+  
   }, [])
 
   const getTitles = (resXML) => {
@@ -95,13 +99,13 @@ function App() {
         </input>
         <button type='submit'>Get RSS</button>
       </form>
-      <img style={{width: '100', height: '200px'}}  src={imgSrc}></img>
-      <h3>{titles[id]} </h3>
-      <p>{shortDesc[id]}</p>
-      <audio controls src={audioURLS[id]}></audio>
-      <h3>{titles[id+1]} </h3>
-      <p>{shortDesc[id+1]}</p>
-      <audio controls src={audioURLS[id+1]}></audio>
+      {isLoading ? <p>Loading...</p> :
+        <div><img style={{width: '100', height: '200px'}}  src={imgSrc}></img>
+            <Feed
+              episodes={episodes}
+            />
+        </div>
+      }
     </div>
   );
 }

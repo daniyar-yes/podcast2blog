@@ -1,10 +1,12 @@
 
 
-const Episode = ( episode ) => {
+const Episode = ( {episode}) => {
   return (
-    <h3>{titles[id]} </h3>
-      <p>{shortDesc[id]}</p>
-      <audio controls src={audioURLS[id]}></audio>
+    <li>
+        <h3>{episode.title} </h3>
+        <p>{episode.description}</p>
+        <audio controls src={episode.audioURL}></audio>
+    </li>
   )
 }
 

@@ -8,6 +8,7 @@ function App() {
   const [rss, setRss] = useState(RSS.WillOfD);
   const [episodes, setEpisodes] = useState([]);
   const [showName, setShowName] = useState('');
+  const [showDescription, setShowDescription] = useState('');
   const [showLength, setShowLength] = useState('');
   const [imgSrc, setImgSrc] = useState('');
   const [currentValue, setCurrentValue] = useState('');
@@ -25,6 +26,7 @@ function App() {
             // we extract Podcast image, titles, descriptions (short) and audio links from RSS XML doc
             const image = getImage(response);
             const name = getShowName(response);
+            const mainDescription = getShowDescription(response);
             const titles = getTitles(response);
             const shortenedDesc = getDescriptons(response);
             const links = getAudioLinks(response);
@@ -43,6 +45,7 @@ function App() {
 
             setImgSrc(image);
             setShowName(name);
+            setShowDescription(mainDescription);
             setEpisodes(combined);
             setShowLength(combined.length)
             setIsLoading(false);
@@ -61,6 +64,11 @@ function App() {
   const getShowName = (resXML) => {
     const name = resXML.querySelector('channel title').textContent;
     return name;
+  }
+
+  const getShowDescription = (resXML) => {
+    const showDescription = resXML.querySelector('channel description').textContent;
+    return showDescription;
   }
   const getTitles = (resXML) => {
     let titles = [];
@@ -170,6 +178,7 @@ function App() {
             <img style={{width: '100', height: '200px'}}  src={imgSrc} alt='Podcast logo'></img>
             <div style={{display: 'flex', flexDirection: 'column', paddingLeft: '20px'}}>
               <p>{showName}</p>
+              <p>Description: {showDescription}</p>
               <p>{showLength} episodes</p>
             </div>
           </div>

@@ -173,11 +173,11 @@ function App() {
               justifyContent: 'left', 
               paddingTop: '10px'
               }}>
-            <img style={{width: '50vw'}}  src={imgSrc} alt='Podcast logo'></img>
-            <div style={{display: 'flex', flexDirection: 'column', paddingLeft: '20px'}}>
-              <p>{showName}</p>
+            <img style={{maxWidth: '200px', maxHeight: '200px', aspectRatio: '1/1'}}  src={imgSrc} alt='Podcast logo'></img>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+              <span>{showName}</span>
               <p>Description: {showDescription}</p>
-              <p>{showLength} episodes</p>
+              <span>{showLength} episodes</span>
             </div>
           </div>
             <Feed

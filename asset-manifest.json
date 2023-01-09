@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/podcast2blog/static/css/main.e6c13ad2.css",
+    "main.js": "/podcast2blog/static/js/main.a6857d9e.js",
+    "index.html": "/podcast2blog/index.html",
+    "main.e6c13ad2.css.map": "/podcast2blog/static/css/main.e6c13ad2.css.map",
+    "main.a6857d9e.js.map": "/podcast2blog/static/js/main.a6857d9e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.a6857d9e.js"
+  ]
+}

@@ -49,7 +49,6 @@ function App() {
             setEpisodes(combined);
             setShowLength(combined.length)
             setIsLoading(false);
-            console.log(combined)
         }
     };
 
@@ -148,10 +147,10 @@ function App() {
         <button 
           type='submit'
           
-          >Podcast ➡️ Blog
+          >Turn Podcast Feed into a Blog
         </button>
       </form>
-      <p style={{textAlign: 'center'}}>Or try rendering other Podcasts by their RSS Feeds:</p>
+      <p style={{textAlign: 'center'}}>Or try rendering these sample Podcasts by their RSS Feeds:</p>
       <div style={{display: 'flex', justifyContent: 'center', paddingTop: '10px'}}>
         <button 
           type='submit'
@@ -187,7 +186,9 @@ function App() {
             />
         </div>
       }
+     
     </div>
+  
   );
 }
 

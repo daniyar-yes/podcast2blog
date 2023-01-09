@@ -1,17 +1,17 @@
 # Turn any Podcast into a Blog
 
-This client-side react app takes Podcast's RSS Feed and renders a blog-like pages based on that RSS Feed.
+This client-side react app takes Podcast's RSS Feed and renders a blog-like page based on that RSS Feed.
 
-The app is live [Here](https://daniyar-yes.github.io/podcast2blog/) and you can use any Anchor.fm RSS link of any podcast that is hosted there (main platform for Spotify Podcasts), or try samples that are provided in the app.
+[The app is live Here](https://daniyar-yes.github.io/podcast2blog/) and you can use any podcasts Anchor.fm RSS link (Anchor.fm is the main platform for Spotify Podcasts), or try samples that are provided in the app.
 
-The key problem of the app was iterating over XML-formatted documents instead of JSON or HTML, which is not a commonly spread task. But I was able to put map useful contents of the XML doc (which included redundant symbols and unwanted html tags) into an array of objects that contains the key info:
+The key problem that I needed to solve while working on the app was iterating over XML-formatted documents instead of JSON or HTML, which is not a commonly spread task. But I was able to map useful contents of the XML doc (which required regex to get rid of redundand tags and symbols) into an clean array of objects that contains the key info:
 
 - Podcast Show Name
 - Show Description
 - Number of episodes
-- Episode titles, descriptions, date published, and audio file
+- Episode titles, descriptions, date published, and audio files
 
-All the required info is stored as a state, and for different RSS Feeds (podcast shows) in renders different feeds of episodes, based on the corresponding info.
+All the required info is stored as states, and for different RSS Feeds (podcast shows) the app updates the states, and consquently renders corresponding feeds of episodes, based on which podcast's RSS feed is chosen.
 
 # Getting Started with Create React App
 

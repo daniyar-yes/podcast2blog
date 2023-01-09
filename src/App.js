@@ -171,8 +171,7 @@ function App() {
             style={{
               display: 'flex', 
               justifyContent: 'left', 
-              paddingTop: '10px', 
-              paddingLeft: '10vw'
+              paddingTop: '10px'
               }}>
             <img style={{width: '100', height: '200px'}}  src={imgSrc} alt='Podcast logo'></img>
             <div style={{display: 'flex', flexDirection: 'column', paddingLeft: '20px'}}>

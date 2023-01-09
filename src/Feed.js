@@ -6,8 +6,7 @@ const Feed = ({ episodes }) => {
       listStyleType: 'none',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'flex-start',
-      marginLeft: '5vw'
+      alignItems: 'flex-start'
       }}>
         {episodes.map((episode) => (
             <Episode 

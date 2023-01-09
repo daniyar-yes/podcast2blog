@@ -173,7 +173,7 @@ function App() {
               justifyContent: 'left', 
               paddingTop: '10px'
               }}>
-            <img style={{width: '100', height: '200px'}}  src={imgSrc} alt='Podcast logo'></img>
+            <img style={{width: '50vw', height: 'auto'}}  src={imgSrc} alt='Podcast logo'></img>
             <div style={{display: 'flex', flexDirection: 'column', paddingLeft: '20px'}}>
               <p>{showName}</p>
               <p>Description: {showDescription}</p>

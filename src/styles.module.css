@@ -1,0 +1,17 @@
+.podcastSummary {
+        display: flex;
+        justify-content: center;
+        padding-top: 10px;
+}
+
+.mainImage {
+        max-width: 200px;
+        max-height: 200px;
+        aspect-ratio: 1/1;
+}
+
+.podcastDescription {
+        display: flex; 
+        flex-direction: column;
+        max-width: 400px;
+}

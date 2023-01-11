@@ -1,71 +1,73 @@
 import RSS from './RssUrl'
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import Feed from './Feed';
+import styles from './styles.module.css';
+import PodcastSummary from './PodcastSummary';
 
 function App() {
  
   const [isLoading, setIsLoading] = useState(true);
   const [rss, setRss] = useState(RSS.WillOfD);
   const [episodes, setEpisodes] = useState([]);
-  const [showName, setShowName] = useState('');
-  const [showDescription, setShowDescription] = useState('');
-  const [showLength, setShowLength] = useState('');
-  const [imgSrc, setImgSrc] = useState('');
-  const [currentValue, setCurrentValue] = useState('');
+  const [numberOfEpisodes, setNumberOfEpisodes] = useState(0);
+  const [podcastDetails, setPodcastDetails] = useState({})
+  const [rssCurrentInput, setRssCurrentInput] = useState('');
 
   useEffect(() => {
-    // fetching XML is specific for Anchor FM, code below follows MDN recommendations for XML
+    // fetching XML following MDN recommendations for XML
     const xhr = new XMLHttpRequest;
     xhr.open('GET', rss);
     xhr.responseType = 'document';
     xhr.overrideMimeType('text/xml');
-    // if XML is fetched OK, we need to get arrays of Titles, Descriptions, AudioURLS in the order they appear in the feed
     xhr.onload = () => {
         if (xhr.readyState === xhr.DONE && xhr.status === 200) {
             const response = xhr.responseXML;
-            // we extract Podcast image, titles, descriptions (short) and audio links from RSS XML doc
-            const image = getImage(response);
-            const name = getShowName(response);
-            const mainDescription = getShowDescription(response);
-            const titles = getTitles(response);
-            const shortenedDesc = getDescriptons(response);
-            const links = getAudioLinks(response);
-            const dates = getPubDate(response);
-            // then we set image as imgSrc state, and combine episodes features from 3 arrays into 1 obj of arrays
-            // and set the combined array as the episodes state
-            const combined = titles.map((title, index) => {
-              return {
-                id: index,
-                title,
-                description: shortenedDesc[index],
-                audioURL: links[index],
-                date: dates[index]
-              };
-            });
-
-            setImgSrc(image);
-            setShowName(name);
-            setShowDescription(mainDescription);
-            setEpisodes(combined);
-            setShowLength(combined.length)
+            // Then we extract Podcast and Episodes details from the XML doc and save as states
+            setPodcastDetails(getPodcastDetails(response));
+            setEpisodes(getEpisodeDetails(response));
+            setNumberOfEpisodes(getEpisodeDetails(response).length);
             setIsLoading(false);
         }
     };
-
     xhr.send()
   }, [rss])
+
+  const getPodcastDetails = (resXML) => {
+    return {
+      image: getImage(resXML),
+      name: getPodcastName(resXML),
+      description: getPodcastDescription(resXML)
+    }
+  }
+
+  const getEpisodeDetails = (resXML) => {
+    const titles = getTitles(resXML);
+    const shortenedDescr = getDescriptons(resXML);
+    const links = getAudioLinks(resXML);
+    const dates = getPubDate(resXML);
+    const combined = titles.map((title, index) => {
+      return {
+        id: index,
+        title,
+        description: shortenedDescr[index],
+        audioURL: links[index],
+        date: dates[index]
+      };
+    });
+    return combined;
+  }
 
   const getImage = (resXML) => {
     const image = resXML.querySelector('image url').innerHTML;
     return image;
   }
 
-  const getShowName = (resXML) => {
+  const getPodcastName = (resXML) => {
     const name = resXML.querySelector('channel title').textContent;
     return name;
   }
 
-  const getShowDescription = (resXML) => {
+  const getPodcastDescription = (resXML) => {
     const showDescription = resXML.querySelector('channel description').textContent;
     return showDescription;
   }
@@ -110,12 +112,12 @@ function App() {
   }
 
   const onRssChange = (e) => {
-    setCurrentValue(e.target.value);
+    setRssCurrentInput(e.target.value);
   }
 
   const handleRssSubmit = (e) => {
     e.preventDefault();
-    const value = currentValue;
+    const value = rssCurrentInput;
     const anchorRegex = /^https:\/\/anchor\.fm\/s\/.+\/podcast\/rss$/i;
     if (anchorRegex.test(value)) {
       setRss(value);
@@ -124,7 +126,7 @@ function App() {
     }
   }
 
-  const handleRssRequest = (rssOption) => {
+  const handleRssSampleRequest = (rssOption) => {
     setRss(rssOption)
   }
 
@@ -146,43 +148,34 @@ function App() {
         </input>
         <button 
           type='submit'
-          
           >Turn Podcast Feed into a Blog
         </button>
       </form>
+
       <p style={{textAlign: 'center'}}>Or try rendering these sample Podcasts by their RSS Feeds:</p>
       <div style={{display: 'flex', justifyContent: 'center', paddingTop: '10px'}}>
         <button 
           type='submit'
-          onClick={() => handleRssRequest(RSS.Sample1)}>Podcast of the Day
+          onClick={() => handleRssSampleRequest(RSS.Sample1)}>Podcast of the Day
         </button>
         <button 
           type='submit'
-          onClick={() => handleRssRequest(RSS.Sample2)}>Today's guest at JRE
+          onClick={() => handleRssSampleRequest(RSS.Sample2)}>Today's guest at JRE
         </button>
         <button 
           type='submit'
-          onClick={() => handleRssRequest(RSS.Sample3)}>Tennis Freakonomics
+          onClick={() => handleRssSampleRequest(RSS.Sample3)}>Tennis Freakonomics
         </button>
       </div>
+
       {isLoading ? <p>Loading...</p> :
+        
         <div>
-          <div 
-            style={{
-              display: 'flex', 
-              justifyContent: 'left', 
-              paddingTop: '10px'
-              }}>
-            <img style={{maxWidth: '200px', maxHeight: '200px', aspectRatio: '1/1'}}  src={imgSrc} alt='Podcast logo'></img>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-              <span>{showName}</span>
-              <p>Description: {showDescription}</p>
-              <span>{showLength} episodes</span>
-            </div>
-          </div>
-            <Feed
-              episodes={episodes}
-            />
+          <PodcastSummary 
+            details={podcastDetails} 
+            number={numberOfEpisodes}
+          />
+          <Feed episodes={episodes}/>
         </div>
       }
      

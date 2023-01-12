@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Feed from './Feed';
 import styles from './styles.module.css';
 import PodcastSummary from './PodcastSummary';
+import RssOptionButtons from './RssOptionButtons';
 
 function App() {
  
@@ -151,25 +152,13 @@ function App() {
           >Turn Podcast Feed into a Blog
         </button>
       </form>
-
-      <p style={{textAlign: 'center'}}>Or try rendering these sample Podcasts by their RSS Feeds:</p>
-      <div style={{display: 'flex', justifyContent: 'center', paddingTop: '10px'}}>
-        <button 
-          type='submit'
-          onClick={() => handleRssSampleRequest(RSS.Sample1)}>Podcast of the Day
-        </button>
-        <button 
-          type='submit'
-          onClick={() => handleRssSampleRequest(RSS.Sample2)}>Today's guest at JRE
-        </button>
-        <button 
-          type='submit'
-          onClick={() => handleRssSampleRequest(RSS.Sample3)}>Tennis Freakonomics
-        </button>
-      </div>
+        
+      <RssOptionButtons 
+        handleRequest={handleRssSampleRequest}
+        RSS={RSS}
+      />
 
       {isLoading ? <p>Loading...</p> :
-        
         <div>
           <PodcastSummary 
             details={podcastDetails} 
@@ -178,7 +167,6 @@ function App() {
           <Feed episodes={episodes}/>
         </div>
       }
-     
     </div>
   
   );

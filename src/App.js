@@ -38,9 +38,24 @@ function App() {
       image: getImage(resXML),
       name: getPodcastName(resXML),
       description: getPodcastDescription(resXML)
-    }
+    };
   }
 
+  const getImage = (resXML) => {
+    const image = resXML.querySelector('image url').innerHTML;
+    return image;
+  }
+
+  const getPodcastName = (resXML) => {
+    const name = resXML.querySelector('channel title').textContent;
+    return name;
+  }
+  
+  const getPodcastDescription = (resXML) => {
+    const showDescription = resXML.querySelector('channel description').textContent;
+    return showDescription;
+  }
+  
   const getEpisodeDetails = (resXML) => {
     const titles = getTitles(resXML);
     const shortenedDescr = getDescriptons(resXML);
@@ -56,21 +71,6 @@ function App() {
       };
     });
     return combined;
-  }
-
-  const getImage = (resXML) => {
-    const image = resXML.querySelector('image url').innerHTML;
-    return image;
-  }
-
-  const getPodcastName = (resXML) => {
-    const name = resXML.querySelector('channel title').textContent;
-    return name;
-  }
-
-  const getPodcastDescription = (resXML) => {
-    const showDescription = resXML.querySelector('channel description').textContent;
-    return showDescription;
   }
 
   const getTitles = (resXML) => {

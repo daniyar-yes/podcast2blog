@@ -1,0 +1,25 @@
+.feedList {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px;
+    padding-left: 15vw;
+    padding-right: 15vw;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+      background-color: lightblue;
+    }
+
+    .feedList {
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0px;
+        padding-left: 5px
+    }
+  }
+

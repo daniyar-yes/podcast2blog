@@ -1,15 +1,9 @@
 import Episode from './Episode'
+import styles from './Feed.module.css'
 
 const Feed = ({ episodes }) => {
   return (
-    <ul style={{
-      listStyleType: 'none',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      margin: '0px',
-      paddingLeft: '5px'
-      }}>
+    <ul className={styles.feedList}>
         {episodes.map((episode) => (
             <Episode 
                 key={episode.id}

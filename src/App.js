@@ -1,9 +1,9 @@
 import RSS from './RssUrl'
 import { useState, useEffect } from 'react';
 import Feed from './Feed';
-import styles from './styles.module.css';
 import PodcastSummary from './PodcastSummary';
 import RssOptionButtons from './RssOptionButtons';
+import RssInputForm from './RssInputForm'
 
 function App() {
  
@@ -12,7 +12,7 @@ function App() {
   const [episodes, setEpisodes] = useState([]);
   const [numberOfEpisodes, setNumberOfEpisodes] = useState(0);
   const [podcastDetails, setPodcastDetails] = useState({})
-  const [rssCurrentInput, setRssCurrentInput] = useState('');
+  
 
   useEffect(() => {
     // fetching XML following MDN recommendations for XML
@@ -72,6 +72,7 @@ function App() {
     const showDescription = resXML.querySelector('channel description').textContent;
     return showDescription;
   }
+
   const getTitles = (resXML) => {
     let titles = [];
     resXML.querySelectorAll('item title')
@@ -112,63 +113,17 @@ function App() {
     return dates;
   }
 
-  const onRssChange = (e) => {
-    setRssCurrentInput(e.target.value);
-  }
-
-  const handleRssSubmit = (e) => {
-    e.preventDefault();
-    const value = rssCurrentInput;
-    const anchorRegex = /^https:\/\/anchor\.fm\/s\/.+\/podcast\/rss$/i;
-    if (anchorRegex.test(value)) {
-      setRss(value);
-    } else {
-      alert('Please put valid Anchor FM RSS link including `https://`')
-    }
-  }
-
-  const handleRssSampleRequest = (rssOption) => {
-    setRss(rssOption)
-  }
-
   return (
     <div className="App">
-      <form 
-        onSubmit={handleRssSubmit}
-        style={{
-          display: 'flex', 
-          justifyContent: 'center', 
-          paddingTop: '10px'
-          }}>
-        <input 
-          label='rss' 
-          type='text' 
-          placeholder={`Put Anchor FM RSS link`}
-          onChange={onRssChange}
-        >
-        </input>
-        <button 
-          type='submit'
-          >Turn Podcast Feed into a Blog
-        </button>
-      </form>
-        
-      <RssOptionButtons 
-        handleRequest={handleRssSampleRequest}
-        RSS={RSS}
-      />
-
+      <RssInputForm setRss={setRss}/>
+      <RssOptionButtons setRss={setRss} RSS={RSS}/>
       {isLoading ? <p>Loading...</p> :
         <div>
-          <PodcastSummary 
-            details={podcastDetails} 
-            number={numberOfEpisodes}
-          />
+          <PodcastSummary details={podcastDetails} number={numberOfEpisodes}/>
           <Feed episodes={episodes}/>
         </div>
       }
     </div>
-  
   );
 }
 

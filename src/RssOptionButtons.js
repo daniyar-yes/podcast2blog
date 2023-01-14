@@ -1,10 +1,14 @@
-import styles from './styles.module.css'
+import styles from './RssOptionButtons.module.css'
 
-const RssOptionButtons = ({ handleRequest, RSS }) => {
+const RssOptionButtons = ({ setRss, RSS }) => {
+
+  const handleRequest = (rssOption) => {
+    setRss(rssOption)
+  }
   return (
     <>
-    <p style={{textAlign: 'center'}}>Or try rendering these sample Podcasts by their RSS Feeds:</p>
-      <div style={{display: 'flex', justifyContent: 'center', paddingTop: '10px'}}>
+    <p className={styles.mainText}>Or try rendering these sample Podcasts by their RSS Feeds:</p>
+      <div className={styles.buttonsContainer}>
         <button 
           type='submit'
           onClick={() => handleRequest(RSS.Sample1)}>Podcast of the Day

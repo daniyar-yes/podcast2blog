@@ -1,6 +1,7 @@
 import styles from './PodcastSummary.module.css';
 
 const PodcastSummary = ({ details, number}) => {
+
   return (
     <div className={styles.podcastSummary}>
       <img 

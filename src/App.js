@@ -1,13 +1,14 @@
-import RSS from './RssUrl'
+import RSS from './xml/RssUrl'
 import { useState, useEffect } from 'react';
-import Feed from './Feed';
-import PodcastSummary from './PodcastSummary';
-import RssOptionButtons from './RssOptionButtons';
-import RssInputForm from './RssInputForm'
+import Feed from './components/Feed';
+import PodcastSummary from './components/PodcastSummary';
+import RssOptionButtons from './components/RssOptionButtons';
+import RssInputForm from './components/RssInputForm';
 
 function App() {
  
   const [isLoading, setIsLoading] = useState(true);
+  const [errorLoading, setErrorLoading] = useState(false);
   const [rss, setRss] = useState(RSS.WillOfD);
   const [episodes, setEpisodes] = useState([]);
   const [numberOfEpisodes, setNumberOfEpisodes] = useState(0);
@@ -28,6 +29,9 @@ function App() {
             setEpisodes(getEpisodeDetails(response));
             setNumberOfEpisodes(getEpisodeDetails(response).length);
             setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          setErrorLoading(`Error Loading, Code: ${xhr.status}`)
         }
     };
     xhr.send()
@@ -44,7 +48,7 @@ function App() {
   const getImage = (resXML) => {
     const image = resXML.querySelector('image url').innerHTML;
     return image;
-  }
+  }  
 
   const getPodcastName = (resXML) => {
     const name = resXML.querySelector('channel title').textContent;
@@ -117,6 +121,7 @@ function App() {
     <div className="App">
       <RssInputForm setRss={setRss}/>
       <RssOptionButtons setRss={setRss} RSS={RSS}/>
+      {errorLoading && <p>{errorLoading}</p>}
       {isLoading ? <p>Loading...</p> :
         <div>
           <PodcastSummary details={podcastDetails} number={numberOfEpisodes}/>

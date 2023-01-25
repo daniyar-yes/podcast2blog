@@ -13,6 +13,10 @@ The key problem that I needed to solve while working on the app was iterating ov
 
 All the required info is stored as states, and for different RSS Feeds (podcast shows) the app updates the states, and consquently renders corresponding feeds of episodes, based on which podcast's RSS feed is chosen.
 
+This code is optimized for Anchor FM RSS format, but can be extended to any XML document structure. In order to do that, check the corresponding Tag Names in XML document structure, and adjust QuerySelector calls in the useEffect and helped functions.
+
+XML request return XML document, and depending on your platform of choice, just update the tag name insinde the Query Selectors.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

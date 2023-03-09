@@ -7,7 +7,7 @@ const Feed = ({ episodes }) => {
         {episodes.map((episode) => (
             <Episode 
                 key={episode.id}
-                episode={episode}    
+                episode={episode}
             
             />
         ))}

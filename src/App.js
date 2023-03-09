@@ -123,7 +123,7 @@ function App() {
       <RssOptionButtons setRss={setRss} RSS={RSS}/>
       {errorLoading && <p>{errorLoading}</p>}
       {isLoading ? <p>Loading...</p> :
-        <div>
+        <div className='podcast'>
           <PodcastSummary details={podcastDetails} number={numberOfEpisodes}/>
           <Feed episodes={episodes}/>
         </div>

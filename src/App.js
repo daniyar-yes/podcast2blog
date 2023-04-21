@@ -96,7 +96,7 @@ const App = () => {
     resXML.querySelectorAll('item description')
       .forEach((description) => {
         let cleanText = description.textContent.replace(/<\/?p>/g, '').replace(/--- .*/, '');
-        let shortened = cleanText.substring(0, 140) + '... Read More';
+        let shortened = cleanText.substring(0, 140) + '...';
         descriptions.push(cleanText);
         shortenedDesc.push(shortened);
     });

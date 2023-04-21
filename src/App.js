@@ -1,11 +1,13 @@
-import RSS from './xml/RssUrl'
+import RSS from './utils/RssUrl'
 import { useState, useEffect } from 'react';
-import Feed from './components/Feed';
-import PodcastSummary from './components/PodcastSummary';
-import RssOptionButtons from './components/RssOptionButtons';
-import RssInputForm from './components/RssInputForm';
+import Feed from './components/containers/Feed';
+import PodcastSummary from './components/podcast_components/PodcastSummary';
+import RssOptionButtons from './components/containers/RssOptionButtons';
+import RssInputForm from './components/form_components/RssInputForm';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
-function App() {
+const App = () => {
  
   const [isLoading, setIsLoading] = useState(true);
   const [errorLoading, setErrorLoading] = useState(false);
@@ -25,9 +27,7 @@ function App() {
         if (xhr.readyState === xhr.DONE && xhr.status === 200) {
             const response = xhr.responseXML;
             // Then we extract Podcast and Episodes details from the XML doc and save as states
-            setPodcastDetails(getPodcastDetails(response));
-            setEpisodes(getEpisodeDetails(response));
-            setNumberOfEpisodes(getEpisodeDetails(response).length);
+            saveResponseAsStates(response);
             setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -37,6 +37,12 @@ function App() {
     xhr.send()
   }, [rss])
 
+  const saveResponseAsStates = (response) => {
+      setPodcastDetails(getPodcastDetails(response));
+      setEpisodes(getEpisodeDetails(response));
+      setNumberOfEpisodes(getEpisodeDetails(response).length);
+      setIsLoading(false);
+  }
   const getPodcastDetails = (resXML) => {
     return {
       image: getImage(resXML),
@@ -119,6 +125,7 @@ function App() {
 
   return (
     <div className="App">
+      <Header />
       <RssInputForm setRss={setRss}/>
       <RssOptionButtons setRss={setRss} RSS={RSS}/>
       {errorLoading && <p>{errorLoading}</p>}
@@ -126,6 +133,7 @@ function App() {
         <div className='podcast'>
           <PodcastSummary details={podcastDetails} number={numberOfEpisodes}/>
           <Feed episodes={episodes}/>
+          <Footer />
         </div>
       }
     </div>

@@ -1,17 +1,16 @@
 .feedList {
-    align-self: center;
     max-width: 650px;
     list-style-type: none;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin: 0px;
+    gap: 1rem;
+    padding-left: 0;
 }
 
 @media only screen and (max-width: 600px) {
-    body {
-      background-color: lightblue;
-    }
 
     .feedList {
         list-style-type: none;

@@ -1,4 +1,4 @@
-import Episode from './Episode'
+import Episode from '../podcast_components/Episode'
 import styles from './Feed.module.css'
 
 const Feed = ({ episodes }) => {

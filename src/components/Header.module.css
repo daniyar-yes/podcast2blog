@@ -1,0 +1,19 @@
+header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.appDescription {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 10px;
+    align-self: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    max-width: 600px;
+}

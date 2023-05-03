@@ -1,14 +1,16 @@
+import React from 'react';
 import styles from './PodcastSummary.module.css';
 
-const PodcastSummary = ({ details, number}) => {
+const PodcastSummary = ({ details, number }) => {
+  
 
   return (
     <div className={styles.podcastSummary}>
       <img 
         className={styles.mainImage} 
         src={details.image} 
-        alt='Podcast logo'>
-      </img>
+        alt='Podcast logo'
+      />
       <div className={styles.podcastDescription}>
         <span>{details.name}</span>
         <p>Description: {details.description}</p>

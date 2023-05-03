@@ -1,5 +1,5 @@
 import RSS from './utils/RssUrl'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Feed from './components/containers/Feed';
 import PodcastSummary from './components/podcast_components/PodcastSummary';
 import RssOptionButtons from './components/containers/RssOptionButtons';
@@ -14,7 +14,7 @@ const App = () => {
   const [rss, setRss] = useState(RSS.WillOfD);
   const [episodes, setEpisodes] = useState([]);
   const [numberOfEpisodes, setNumberOfEpisodes] = useState(0);
-  const [podcastDetails, setPodcastDetails] = useState({})
+  const [podcastDetails, setPodcastDetails] = useState({});
   
 
   useEffect(() => {
@@ -28,14 +28,13 @@ const App = () => {
             const response = xhr.responseXML;
             // Then we extract Podcast and Episodes details from the XML doc and save as states
             saveResponseAsStates(response);
-            setIsLoading(false);
         } else {
           setIsLoading(false);
           setErrorLoading(`Error Loading, Code: ${xhr.status}`)
         }
     };
     xhr.send()
-  }, [rss])
+  }, [rss])  
 
   const saveResponseAsStates = (response) => {
       setPodcastDetails(getPodcastDetails(response));
@@ -43,6 +42,7 @@ const App = () => {
       setNumberOfEpisodes(getEpisodeDetails(response).length);
       setIsLoading(false);
   }
+
   const getPodcastDetails = (resXML) => {
     return {
       image: getImage(resXML),
@@ -54,7 +54,7 @@ const App = () => {
   const getImage = (resXML) => {
     const image = resXML.querySelector('image url').innerHTML;
     return image;
-  }  
+  }
 
   const getPodcastName = (resXML) => {
     const name = resXML.querySelector('channel title').textContent;
@@ -123,15 +123,35 @@ const App = () => {
     return dates;
   }
 
+  const colors = [];
+
+  for (let i = 180; i <= 240; i += 2) {
+      for (let j = 30; j <= 100; j += 10) {
+      const color = `hsl(${i}, 100%, ${j}%)`;
+      colors.push(color);
+    }
+  }
+
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  const randomColor = colors[randomIndex];
+  
+
+  const gradient = `radial-gradient(${randomColor}, #f2f2f2)`;
+
+
   return (
-    <div className="App">
+    <div className="App" style={{ background: gradient}}>
       <Header />
       <RssInputForm setRss={setRss}/>
       <RssOptionButtons setRss={setRss} RSS={RSS}/>
       {errorLoading && <p>{errorLoading}</p>}
       {isLoading ? <p>Loading...</p> :
         <div className='podcast'>
-          <PodcastSummary details={podcastDetails} number={numberOfEpisodes}/>
+          <PodcastSummary 
+            details={podcastDetails} 
+            number={numberOfEpisodes}
+            setIsLoading={setIsLoading}
+          />
           <Feed episodes={episodes}/>
           <Footer />
         </div>
